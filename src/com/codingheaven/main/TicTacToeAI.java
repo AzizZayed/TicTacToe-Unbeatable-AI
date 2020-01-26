@@ -18,28 +18,34 @@ public class TicTacToeAI extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private static final short SIZE = 3;
-	private final static int IMAGE_SIZE = 150;
+	private static final short SIZE = 6; // size of the game, n x n tic-tac-toe!
+	private final static int IMAGE_SIZE = 150; // size of an image, images are squares
 
-	private final static char PLAYER_CHAR = 'x';
-	private final static char AI_CHAR = 'o';
-	private final static int EMPTY_CHAR = ' ';
+	private static final int WIDTH = IMAGE_SIZE * SIZE; // width of panel
+	private static final int HEIGHT = WIDTH; // height of panel, panel is a square
 
-	private static final int WIDTH = IMAGE_SIZE * SIZE;
-	private static final int HEIGHT = WIDTH;
+	private char grid[][]; // main data structure
+	private final static char PLAYER_CHAR = 'x'; // player is always x
+	private final static char AI_CHAR = 'o'; // computer is always o
+	private final static int EMPTY_CHAR = ' '; // placeholder for an empty cell
 
-	private char grid[][];
-	private short freeCells;
-	private BufferedImage xpic, opic;
+	private short freeCells; // number of cells that are empty
+	private BufferedImage xpic, opic; // images of x and o
 
+	/**
+	 * Constructor
+	 */
 	public TicTacToeAI() {
 
 		loadImages();
-		canvasSetup();
+		panelSetup();
 		initGrid();
 
 	}
 
+	/**
+	 * Load all the images out of memory, x and o images done in Microsoft paint
+	 */
 	private void loadImages() {
 		try {
 			xpic = ImageIO.read(new File("res/xpic.png"));
@@ -49,7 +55,10 @@ public class TicTacToeAI extends JPanel {
 		}
 	}
 
-	private void canvasSetup() {
+	/**
+	 * Setup the panel size, settings, and events
+	 */
+	private void panelSetup() {
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
 		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
@@ -71,6 +80,9 @@ public class TicTacToeAI extends JPanel {
 		});
 	}
 
+	/**
+	 * initialize the game grid, the data structure
+	 */
 	private void initGrid() {
 		grid = new char[SIZE][SIZE];
 
@@ -81,6 +93,12 @@ public class TicTacToeAI extends JPanel {
 		freeCells = SIZE * SIZE;
 	}
 
+	/**
+	 * called when a cell is clicked, checks if cell is empty and then triggers AI
+	 * 
+	 * @param i, horizontal index of cell clicked
+	 * @param j, vertical index of cell clicked
+	 */
 	private void cellClicked(short i, short j) {
 		char cell = grid[i][j];
 
@@ -108,6 +126,11 @@ public class TicTacToeAI extends JPanel {
 
 	}
 
+	/**
+	 * Check if the game is a tie
+	 * 
+	 * @return true if the game is a tie, false if otherwise
+	 */
 	private boolean tieCheck() {
 		if (freeCells == 0) {
 			repaint();
@@ -122,6 +145,11 @@ public class TicTacToeAI extends JPanel {
 
 	}
 
+	/**
+	 * Checks if one of the 2 opponents won the game, displays message box if yes
+	 * 
+	 * @return true if a winner exits, false otherwise
+	 */
 	private boolean winCheck() {
 		char winnerChar = EMPTY_CHAR;
 
@@ -200,6 +228,9 @@ public class TicTacToeAI extends JPanel {
 
 	}
 
+	/**
+	 * Computer's turn to play
+	 */
 	private void triggerAI() {
 
 		int celli = 0, cellj = 0;
@@ -225,11 +256,21 @@ public class TicTacToeAI extends JPanel {
 		drawGame(g);
 	}
 
+	/**
+	 * Draw white background
+	 * 
+	 * @param g, tool to draw
+	 */
 	private void drawBackground(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
 
+	/**
+	 * Draws game using the main data structure and the provided pictures of x and o
+	 * 
+	 * @param g, tool to draw
+	 */
 	private void drawGame(Graphics g) {
 		for (int i = 0; i < SIZE; i++) {
 			for (int j = 0; j < SIZE; j++) {
@@ -248,7 +289,13 @@ public class TicTacToeAI extends JPanel {
 	}
 
 	public static void main(String args[]) {
+
+		/*
+		 * frame to add the game into it, since the game is a subclass of JPanel and can
+		 * support graphics
+		 */
 		JFrame frame = new JFrame("Tic Tac Toe");
+
 		TicTacToeAI game = new TicTacToeAI();
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
