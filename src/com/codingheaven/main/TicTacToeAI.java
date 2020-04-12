@@ -1,311 +1,127 @@
 package com.codingheaven.main;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
-public class TicTacToeAI extends JPanel {
-
-	private static final long serialVersionUID = 1L;
-
-	private static final short SIZE = 6; // size of the game, n x n tic-tac-toe!
-	private final static int IMAGE_SIZE = 150; // size of an image, images are squares
-
-	private static final int WIDTH = IMAGE_SIZE * SIZE; // width of panel
-	private static final int HEIGHT = WIDTH; // height of panel, panel is a square
-
-	private char grid[][]; // main data structure
-	private final static char PLAYER_CHAR = 'x'; // player is always x
-	private final static char AI_CHAR = 'o'; // computer is always o
-	private final static int EMPTY_CHAR = ' '; // placeholder for an empty cell
-
-	private short freeCells; // number of cells that are empty
-	private BufferedImage xpic, opic; // images of x and o
+public class TicTacToeAI {
 
 	/**
-	 * Constructor
-	 */
-	public TicTacToeAI() {
-
-		loadImages();
-		panelSetup();
-		initGrid();
-
-	}
-
-	/**
-	 * Load all the images out of memory, x and o images done in Microsoft paint
-	 */
-	private void loadImages() {
-		try {
-			xpic = ImageIO.read(new File("res/xpic.png"));
-			opic = ImageIO.read(new File("res/opic.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Setup the panel size, settings, and events
-	 */
-	private void panelSetup() {
-		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-		this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
-		this.setMinimumSize(new Dimension(WIDTH, HEIGHT));
-
-		this.setFocusable(true);
-
-		this.addMouseListener(new MouseAdapter() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				short i = (short) (e.getPoint().getX() / IMAGE_SIZE);
-				short j = (short) (e.getPoint().getY() / IMAGE_SIZE);
-
-				cellClicked(i, j);
-
-				repaint();
-			}
-
-		});
-	}
-
-	/**
-	 * initialize the game grid, the data structure
-	 */
-	private void initGrid() {
-		grid = new char[SIZE][SIZE];
-
-		for (int i = 0; i < SIZE; i++)
-			for (int j = 0; j < SIZE; j++)
-				grid[i][j] = EMPTY_CHAR;
-
-		freeCells = SIZE * SIZE;
-	}
-
-	/**
-	 * called when a cell is clicked, checks if cell is empty and then triggers AI
+	 * Just play randomly
 	 * 
-	 * @param i, horizontal index of cell clicked
-	 * @param j, vertical index of cell clicked
+	 * @param grid        - the n*n tic-tac-toe grid
+	 * @param sizeOfBoard - the size of the grid (n, usually 3 but can be increased)
+	 * @param emptyChar   - the symbol of an empty cell in the grid (' ')
+	 * @param AIChar      - the symbol of an AI cell in the grid ('o')
 	 */
-	private void cellClicked(short i, short j) {
-		char cell = grid[i][j];
-
-		if (cell != EMPTY_CHAR)
-			return;
-
-		grid[i][j] = PLAYER_CHAR;
-		freeCells--;
-
-		repaint();
-
-		if (winCheck())
-			return;
-
-		if (tieCheck())
-			return;
-
-		triggerAI();
-
-		repaint();
-
-		winCheck();
-
-		tieCheck();
-
-	}
-
-	/**
-	 * Check if the game is a tie
-	 * 
-	 * @return true if the game is a tie, false if otherwise
-	 */
-	private boolean tieCheck() {
-		if (freeCells == 0) {
-			repaint();
-			int y = JOptionPane.showConfirmDialog(this, "It's a Tie. Restart? ", " Tic Tac Toe ",
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (y == JOptionPane.YES_OPTION)
-				initGrid();
-			return true;
-		}
-
-		return false;
-
-	}
-
-	/**
-	 * Checks if one of the 2 opponents won the game, displays message box if yes
-	 * 
-	 * @return true if a winner exits, false otherwise
-	 */
-	private boolean winCheck() {
-		char winnerChar = EMPTY_CHAR;
-
-		int j, i;
-
-		String winTextPlayer = Character.toString(PLAYER_CHAR);
-		String winTextAI = Character.toString(AI_CHAR);
-		String row;
-
-		for (i = 1; i < SIZE; i++) {
-			winTextPlayer += PLAYER_CHAR;
-			winTextAI += AI_CHAR;
-		}
-
-		// Horizontal checks
-		j = 0;
-		while (winnerChar == EMPTY_CHAR && j < SIZE) {
-			row = "";
-
-			for (i = 0; i < SIZE; i++)
-				row += grid[i][j];
-
-			if (row.equals(winTextPlayer))
-				winnerChar = PLAYER_CHAR;
-			else if (row.equals(winTextAI))
-				winnerChar = AI_CHAR;
-
-			j++;
-		}
-
-		// vertical checks
-		i = 0;
-		while (winnerChar == EMPTY_CHAR && i < SIZE) {
-			row = "";
-
-			for (j = 0; j < SIZE; j++)
-				row += grid[i][j];
-
-			if (row.equals(winTextPlayer))
-				winnerChar = PLAYER_CHAR;
-			else if (row.equals(winTextAI))
-				winnerChar = AI_CHAR;
-
-			i++;
-		}
-
-		// diagonal checks
-		row = "";
-		for (i = 0, j = 0; i < SIZE && j < SIZE; i++, j++)
-			row += grid[i][j];
-
-		if (row.equals(winTextPlayer))
-			winnerChar = PLAYER_CHAR;
-		else if (row.equals(winTextAI))
-			winnerChar = AI_CHAR;
-
-		row = "";
-		for (i = 0, j = SIZE - 1; i < SIZE && j >= 0; i++, j--)
-			row += grid[i][j];
-
-		if (row.equals(winTextPlayer))
-			winnerChar = PLAYER_CHAR;
-		else if (row.equals(winTextAI))
-			winnerChar = AI_CHAR;
-
-		// message box
-		if (winnerChar != EMPTY_CHAR) {
-			JOptionPane.showMessageDialog(this, Character.toUpperCase(winnerChar) + " Won! Restarting.",
-					" Tic Tac Toe ", JOptionPane.INFORMATION_MESSAGE);
-
-			initGrid();
-			return true;
-		}
-
-		return false;
-
-	}
-
-	/**
-	 * Computer's turn to play
-	 */
-	private void triggerAI() {
-
+	public static void randomPlay(char[][] grid, int sizeOfBoard, char emptyChar, char AIChar) {
 		int celli = 0, cellj = 0;
 		boolean cellFound = false;
 
 		while (!cellFound) {
 
-			celli = (int) (Math.random() * SIZE);
-			cellj = (int) (Math.random() * SIZE);
+			celli = (int) (Math.random() * sizeOfBoard);
+			cellj = (int) (Math.random() * sizeOfBoard);
 
-			cellFound = (grid[celli][cellj] == EMPTY_CHAR);
+			cellFound = (grid[celli][cellj] == emptyChar);
 		}
 
-		grid[celli][cellj] = AI_CHAR;
-
-		freeCells--;
-
-	}
-
-	@Override
-	public void paintComponent(Graphics g) {
-		drawBackground(g);
-		drawGame(g);
+		grid[celli][cellj] = AIChar;
 	}
 
 	/**
-	 * Draw white background
+	 * the AI plays using a minimax algorithm, without alpha-beta pruning
 	 * 
-	 * @param g, tool to draw
+	 * @param board     - TICTACTOE Board
+	 * @param grid      - the n*n tic-tac-toe grid
+	 * @param size      - the size of the grid (n, usually 3 but can be increased)
+	 * @param empty     - the symbol of an empty cell in the grid (' ')
+	 * @param AI        - the symbol of an AI cell in the grid ('o')
+	 * @param player    - the symbol of a player in the grid ('x')
+	 * @param movesLeft - the number of moves left
 	 */
-	private void drawBackground(Graphics g) {
-		g.setColor(Color.WHITE);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
-	}
+	public static void smartPlay(TicTacToeBoard board, char[][] grid, int size, char empty, char AI, char player,
+			int movesLeft) {
 
-	/**
-	 * Draws game using the main data structure and the provided pictures of x and o
-	 * 
-	 * @param g, tool to draw
-	 */
-	private void drawGame(Graphics g) {
-		for (int i = 0; i < SIZE; i++) {
-			for (int j = 0; j < SIZE; j++) {
-				int x = i * IMAGE_SIZE;
-				int y = j * IMAGE_SIZE;
+		int best = -Integer.MAX_VALUE;
 
-				if (grid[i][j] == PLAYER_CHAR)
-					g.drawImage(xpic, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
-				else if (grid[i][j] == AI_CHAR)
-					g.drawImage(opic, x, y, IMAGE_SIZE, IMAGE_SIZE, null);
+		int x = -1;
+		int y = -1;
 
-				g.setColor(Color.BLACK);
-				g.drawRect(x, y, IMAGE_SIZE, IMAGE_SIZE);
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (grid[i][j] == empty) {
+					grid[i][j] = AI;
+					movesLeft--;
+
+					int value = minimaxNormal(board, grid, size, empty, AI, player, movesLeft, false);
+
+					movesLeft++;
+					grid[i][j] = empty;
+
+					if (value > best) {
+						x = i;
+						y = j;
+						best = value;
+					}
+				}
 			}
 		}
+
+		grid[x][y] = AI;
 	}
 
-	public static void main(String args[]) {
+	/**
+	 * the minimax algorithm without alpha beta pruning
+	 * 
+	 * @param board      - TICTACTOE Board
+	 * @param grid       - the n*n tic-tac-toe grid (char array)
+	 * @param size       - the size of the grid (n, usually 3 but can be increased)
+	 * @param empty      - the symbol of an empty cell in the grid (' ')
+	 * @param AI         - the symbol of an AI cell in the grid ('o')
+	 * @param player     - the symbol of a player in the grid ('x')
+	 * @param movesLeft  - the number of moves left
+	 * @param maximizing - if the algorithm is maximizing or not
+	 * @return the score of the scenario
+	 */
+	private static int minimaxNormal(TicTacToeBoard board, char[][] grid, int size, char empty, char AI, char player,
+			int movesLeft, boolean maximizing) {
 
-		/*
-		 * frame to add the game into it, since the game is a subclass of JPanel and can
-		 * support graphics
-		 */
-		JFrame frame = new JFrame("Tic Tac Toe");
+		if (board.winCheck()) {
+			if (maximizing) {
+				return -10;
+			} else {
+				return 10;
+			}
+		} else if (movesLeft == 0) {
+			return 0;
+		}
 
-		TicTacToeAI game = new TicTacToeAI();
+		int mult;
+		char current;
 
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.add(game);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		game.setDoubleBuffered(true);
+		if (maximizing) {
+			mult = -1;
+			current = AI;
+		} else {
+			mult = 1;
+			current = player;
+		}
 
-		game.repaint();
+		int best = mult * Integer.MAX_VALUE;
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				if (grid[i][j] == empty) {
+					grid[i][j] = current;
+					movesLeft--;
+
+					best = mult * Math.min(mult * best,
+							mult * minimaxNormal(board, grid, size, empty, AI, player, movesLeft, !maximizing));
+
+					movesLeft++;
+					grid[i][j] = empty;
+				}
+			}
+		}
+
+		return best;
+
 	}
+
 }
