@@ -9,6 +9,12 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+/**
+ * the board that contains tic tac toe game/grid
+ * 
+ * @author Zayed
+ *
+ */
 public class TicTacToeBoard {
 
 	private final short SIZE = 3; // size of the game, n x n tic-tac-toe!
@@ -219,10 +225,9 @@ public class TicTacToeBoard {
 	 * Computer's turn to play
 	 */
 	public void triggerAI() {
-//		TicTacToeAI.randomPlay(grid, SIZE, EMPTY_CHAR, AI_CHAR);
-//		TicTacToeAI.smartPlay(this, grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR, freeCells);
-		TicTacToeAI.smartPlay2(this, grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR, freeCells, true, 100);
-//		TicTacToeAI.superSmartPlay(this, grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR, freeCells);
+//		TicTacToeAI.randomPlay(grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR);
+		int depth = 21 / SIZE;
+		TicTacToeAI.smartPlay(grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR, freeCells, true, depth);
 		freeCells--;
 	}
 

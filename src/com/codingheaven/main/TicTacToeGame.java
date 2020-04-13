@@ -3,12 +3,20 @@ package com.codingheaven.main;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * main class, drawing functionality
+ * 
+ * @author Zayed
+ *
+ */
 public class TicTacToeGame extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -19,8 +27,12 @@ public class TicTacToeGame extends JPanel {
 	 * Constructor
 	 */
 	public TicTacToeGame() {
-		board = new TicTacToeBoard(this);
+		initialize();
 		panelSetup();
+	}
+
+	private void initialize() {
+		board = new TicTacToeBoard(this);
 	}
 
 	/**
@@ -44,6 +56,20 @@ public class TicTacToeGame extends JPanel {
 				repaint();
 			}
 
+		});
+
+		this.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				char key = e.getKeyChar();
+
+				if (key == 'r') // 'r' to restart game
+					initialize();
+
+				repaint();
+
+			}
 		});
 	}
 
