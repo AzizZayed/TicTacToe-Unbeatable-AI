@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class TicTacToeBoard {
 
-	private final short SIZE = 3; // size of the game, n x n tic-tac-toe!
+	private final short SIZE = 7; // size of the game, n x n tic-tac-toe!
 	private int gridSize = 150; // size of an image, images are squares
 
 	private char grid[][]; // main data structure
@@ -82,8 +82,8 @@ public class TicTacToeBoard {
 	/**
 	 * called when a cell is clicked, checks if cell is empty and then triggers AI
 	 * 
-	 * @param i, horizontal index of cell clicked
-	 * @param j, vertical index of cell clicked
+	 * @param x, horizontal mouse position (x)
+	 * @param y, vertical mouse position (y)
 	 */
 	public void cellClicked(int x, int y) {
 		int i = x / gridSize;
