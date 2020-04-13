@@ -219,7 +219,10 @@ public class TicTacToeBoard {
 	 * Computer's turn to play
 	 */
 	public void triggerAI() {
-		TicTacToeAI.smartPlay(this, grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR, freeCells);
+//		TicTacToeAI.randomPlay(grid, SIZE, EMPTY_CHAR, AI_CHAR);
+//		TicTacToeAI.smartPlay(this, grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR, freeCells);
+		TicTacToeAI.smartPlay2(this, grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR, freeCells, true, 100);
+//		TicTacToeAI.superSmartPlay(this, grid, SIZE, EMPTY_CHAR, AI_CHAR, PLAYER_CHAR, freeCells);
 		freeCells--;
 	}
 

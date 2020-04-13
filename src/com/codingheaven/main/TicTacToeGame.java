@@ -27,7 +27,7 @@ public class TicTacToeGame extends JPanel {
 	 * Setup the panel size, settings, and events
 	 */
 	private void panelSetup() {
-		int gameSize = board.getGridSize() * board.getSize();
+		int gameSize = board.getGridSize() * board.getSize() + 1;
 
 		this.setPreferredSize(new Dimension(gameSize, gameSize));
 		this.setMaximumSize(new Dimension(gameSize, gameSize));
@@ -59,7 +59,7 @@ public class TicTacToeGame extends JPanel {
 	 * @param g, tool to draw
 	 */
 	private void drawBackground(Graphics g) {
-		int gameSize = board.getGridSize() * board.getSize();
+		int gameSize = board.getGridSize() * board.getSize() + 1;
 
 		g.setColor(Color.WHITE);
 		g.fillRect(0, 0, gameSize, gameSize);
