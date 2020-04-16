@@ -34,7 +34,6 @@ public class TicTacToeAI {
 	/**
 	 * Super smart unbeatable AI, includes MiniMax algorithm and alpha beta pruning
 	 * 
-	 * @param board     - TICTACTOE Board
 	 * @param grid      - the n*n tic-tac-toe grid
 	 * @param size      - the size of the grid (n, usually 3 but can be increased)
 	 * @param empty     - the symbol of an empty cell in the grid (' ')
@@ -82,7 +81,6 @@ public class TicTacToeAI {
 	/**
 	 * the minimax algorithm without alpha beta pruning
 	 * 
-	 * @param board      - TICTACTOE Board
 	 * @param grid       - the n*n tic-tac-toe grid (char array)
 	 * @param size       - the size of the grid (n, usually 3 but can be increased)
 	 * @param empty      - the symbol of an empty cell in the grid (' ')
@@ -140,7 +138,6 @@ public class TicTacToeAI {
 	/**
 	 * the minimax algorithm with alpha beta pruning
 	 * 
-	 * @param board      - TICTACTOE Board
 	 * @param grid       - the n*n tic-tac-toe grid (char array)
 	 * @param size       - the size of the grid (n, usually 3 but can be increased)
 	 * @param empty      - the symbol of an empty cell in the grid (' ')

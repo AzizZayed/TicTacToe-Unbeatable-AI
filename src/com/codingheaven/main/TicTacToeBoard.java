@@ -17,7 +17,7 @@ import javax.swing.JOptionPane;
  */
 public class TicTacToeBoard {
 
-	private final short SIZE = 7; // size of the game, n x n tic-tac-toe!
+	private final short SIZE = 3; // size of the game, n x n tic-tac-toe!
 	private int gridSize = 150; // size of an image, images are squares
 
 	private char grid[][]; // main data structure
